@@ -4,12 +4,12 @@ let validateSession = require('../middleware/validate-session');
 const Log = require('../db').import('../models/log');
 
 //Practice-test
-router.get('/practice', validateSession, function(req,res){
-    res.send('Hey!! This is a practice route!')
-});
+// router.get('/practice', validateSession, function(req,res){
+//     res.send('Hey!! This is a practice route!')
+// });
 
 //Allows user to create a workout log
-router.post('/create', validateSession, (req, res) => {
+router.post('/', validateSession, (req, res) => {
     const LogEntry = {
         description: req.body.log.description,
         definition: req.body.log.definition,
@@ -22,7 +22,7 @@ router.post('/create', validateSession, (req, res) => {
 });
 
 //Gets all logs for individual user
-router.get('/mine', validateSession, (req, res) => {
+router.get('/', validateSession, (req, res) => {
     let userid = req.user.id
     Log.findAll({
         where: {owner: userid}
@@ -43,7 +43,7 @@ router.get('/:id', function (req, res) {
 });
 
 //allows individual logs be updated by a user
-router.put('/update/:id', validateSession, function (req, res) {
+router.put('/:id', validateSession, function (req, res) {
     const updateLogEntry = {
         description: req.body.log.description,
         definition: req.body.log.definition,
@@ -58,7 +58,7 @@ router.put('/update/:id', validateSession, function (req, res) {
 });
 
 //allows individual logs to be delted by a user
-router.delete('/delete/:id', validateSession, function (req, res) {
+router.delete('/:id', validateSession, function (req, res) {
     const query = { where: { id: req.params.id, owner: req.user.id }};
 
     Log.destroy(query)
